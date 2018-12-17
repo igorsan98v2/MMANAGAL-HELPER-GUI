@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.ygs.LayoutControll" >
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.0" minWidth="10.0" prefWidth="682.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="318.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Canvas fx:id="canvas" height="550.0" width="625.0">
+         <GridPane.margin>
+            <Insets left="25.0" />
+         </GridPane.margin>
+      </Canvas>
+      <VBox prefHeight="400.0" prefWidth="250.0" GridPane.columnIndex="1">
+         <children>
+            <VBox prefHeight="546.0" prefWidth="319.0">
+               <children>
+                  <VBox layoutX="10.0" layoutY="50.0" prefHeight="120.0" prefWidth="319.0">
+                     <children>
+                        <Label text="Параметры а:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="50.0" prefWidth="319.0">
+                           <children>
+                              <Label text="а нач.">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="a_s" prefHeight="25.0" prefWidth="88.0" />
+                              <Label text="а конеч.">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="a_e" prefHeight="25.0" prefWidth="88.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="38.0" prefWidth="319.0">
+                           <children>
+                              <Label text="Число витков:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Spinner fx:id="a_c" editable="true" prefHeight="25.0" prefWidth="126.0" min="2" max="10" initialValue="2" >
+
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+
+                                 </HBox.margin>
+
+                              </Spinner>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="55.0" prefWidth="319.0">
+                     <children>
+                        <Label text="Параметры витков:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Шаг угла">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Spinner fx:id="angl_step" editable="true" prefHeight="25.0" prefWidth="126.0" min="5" max="90"
+                                       initialValue="25" amountToStepBy="5" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="79.0" prefWidth="319.0">
+                     <children>
+                        <Label text="Начальное расстояние:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="coil_space" prefHeight="25.0" prefWidth="196.0" />
+                              <Label fx:id="coil_space_metric" text="мм">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox prefHeight="68.0" prefWidth="252.0">
+                     <children>
+                        <HBox prefHeight="77.0" prefWidth="319.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="130.0" text="Размерность:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="coil_metric" prefHeight="25.0" prefWidth="91.0" value="мм" onAction="#changeMetricCoil" >
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="мм" />
+                                       <String fx:value="см" />
+                                       <String fx:value="м" />
+                                    </FXCollections>
+                                 </items>
+
+                              </ChoiceBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <Label text="Параметры проволоки:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox layoutX="10.0" layoutY="145.0" prefHeight="82.0" prefWidth="319.0">
+                     <children>
+                        <Label text="Радиус проволоки:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="wire_r" prefHeight="25.0" prefWidth="196.0" />
+                              <Label text="мм" fx:id="wire_r_metric">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="68.0" prefWidth="252.0">
+                     <children>
+                        <HBox prefHeight="77.0" prefWidth="319.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="130.0" text="Размерность:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="wire_metric" prefHeight="25.0" prefWidth="91.0" value="мм" onAction="#changeMetricWire">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="мм" />
+                                       <String fx:value="см" />
+                                       <String fx:value="м" />
+                                    </FXCollections>
+                                 </items>
+
+                              </ChoiceBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" >
+               <children>
+                  <Button fx:id="calcButton" mnemonicParsing="false" text="Расчитать" onAction="#calc">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</GridPane>
