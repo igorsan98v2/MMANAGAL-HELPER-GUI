@@ -78,8 +78,8 @@ public class Calc {
             System.out.println(param);
             calcCurve(param,1);
         }
-        calcEdges();
-        calcEnds(a.length);
+      //  calcEdges();
+       // calcEnds(a.length);
         System.out.println("before mirior size"+results.size());
         mirror(results.size());
         System.out.println("after mirior size"+results.size());

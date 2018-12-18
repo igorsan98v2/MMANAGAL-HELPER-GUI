@@ -29,9 +29,12 @@ public class WriteToFile {
             writer  = new PrintWriter(path+name+".maa", "UTF-8");
             writer.println("ANTENNA ");
             writer.println("*");
-            writer.println("14.5");
+            writer.println("800");
             writer.println( "***Wires***");
             writer.println(results.size());
+
+            String output1 = String.format("%.5f,\t%.5f,\t%.1f,\t%.5f,\t%.5f,\t0.0,\t%.5f,\t-1",results.get(0).getX(), results.get(0).getY(),results.get(0).getZ(),-1*results.get(0).getX(),-1*results.get(0).getY(), results.get(0).getRadius());
+            writer.println(output1);
             for(Result result:results) {
 
                 String output = String.format("%.5f,\t%.5f,\t%.1f,\t%.5f,\t%.5f,\t0.0,\t%.5f,\t-1",result.getX(), result.getY(),result.getZ(), result.getX1(), result.getY1(), result.getRadius());

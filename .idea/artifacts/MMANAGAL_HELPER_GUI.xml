@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="MMANAGAL-HELPER-GUI">
+    <output-path>$PROJECT_DIR$/out/artifacts/MMANAGAL_HELPER_GUI</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.ygs.HelperGUI" />
+        <option name="description" value="" />
+        <option name="height" value="600" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="MMANAGAL HELPER" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+        <option name="width" value="1000" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="MMANAGAL_HELPER_GUI.jar">
+        <element id="module-output" name="MMANAGAL-HELPER-GUI" />
+      </element>
+    </root>
+  </artifact>
+</component>

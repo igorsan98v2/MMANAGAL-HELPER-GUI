@@ -78,7 +78,7 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <Spinner fx:id="a_c" editable="true" prefHeight="25.0" prefWidth="126.0" min="2" max="10" initialValue="2" >
+                              <Spinner fx:id="a_c" editable="true" prefHeight="25.0" prefWidth="126.0" min="1" max="50" initialValue="2" >
 
                                  <HBox.margin>
                                     <Insets right="5.0" />
