@@ -19,7 +19,7 @@ public class Main {
 	// write your code here
         Calc antenna =   new Calc(21,25,15,"mm","mm");
         double []a= {0.00609234622,0.007,0.008,0.009,0.01};
-        ArrayList<Result>results = antenna.calcAntenna(a);
+        ArrayList<Result>results = antenna.calcAntenna(a,0);
 
         PrintWriter  writer = null;
         Locale.setDefault(Locale.US);
@@ -41,7 +41,6 @@ public class Main {
             writer.println("w1c,\t0.0,\t1.0");
             writer.println("*** Load ***");
             writer.println("0,\t0");
-
 
 
 

@@ -226,7 +226,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" >
                <children>
-                  <Button fx:id="calcButton" mnemonicParsing="false" text="Расчитать" onAction="#calc">
+                  <Button fx:id="calcButton" mnemonicParsing="false" text="Рассчитать" onAction="#calc">
                      <font>
                         <Font size="20.0" />
                      </font>

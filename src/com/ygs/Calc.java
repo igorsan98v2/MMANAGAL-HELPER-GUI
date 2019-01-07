@@ -7,6 +7,8 @@ public class Calc {
     private float startDist;
     private int angleStep;
     private float radius;
+    private double dif;
+    private float difStep;
     private ArrayList<Result>results =new ArrayList<>();
     private double toRadian(double angle){
         return (Math.PI*angle/180f);
@@ -18,7 +20,7 @@ public class Calc {
         }
     }
     private void calcEdges(){
-        int oneCurveSize=360/angleStep;
+        int oneCurveSize=(360*2)/angleStep;
         int totalSize =results.size()/oneCurveSize;
         for(int i=0;i<totalSize;i++){
            for(int j=i+1;j<totalSize;j++){
@@ -31,7 +33,7 @@ public class Calc {
         }
     }
     private void calcEnds(int curvesNumber){
-        int oneCurveSize=360/angleStep;
+        int oneCurveSize=(360*2)/angleStep;
         for(int i=0;i<curvesNumber-1;i++){
             for(int j=i+1;j<curvesNumber;j++){
                 int lstIndex = oneCurveSize-1;
@@ -44,10 +46,10 @@ public class Calc {
     public  void clear(){
         results= new ArrayList<>();
     }
-    private void calcCurve(double a,int side){
-        for(float angle=0,angle_1=angleStep;angle_1<=360;angle+=angleStep,angle_1+=angleStep ){
-            double protoRes =(startDist*Math.exp(a*angle))*side;
-            double protoRes_1= (startDist*Math.exp(a*angle_1))*side;
+    private void calcCurve(double a,int side,float curDif){
+        for(float angle=0,angle_1=angleStep;angle_1<=360*2;angle+=angleStep,angle_1+=angleStep ){
+            double protoRes =(startDist*Math.exp(a*(angle-curDif)))*side;
+            double protoRes_1= (startDist*Math.exp(a*(angle_1-curDif)))*side;
             double radAngel = toRadian(angle);
             double radAngel_1 = toRadian(angle_1);
             results.add(new Result((protoRes*Math.cos(radAngel)),(protoRes*Math.sin(radAngel)),0,
@@ -58,6 +60,7 @@ public class Calc {
     public Calc(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC){
         int metricCofAntenna =0;
         int metricCofWire =0;
+
         switch (ANTENNA_METRIC){
             case "mm":metricCofAntenna=1000;
             break;
@@ -73,13 +76,25 @@ public class Calc {
         this.angleStep=angleStep;
     }
 
-    public ArrayList<Result> calcAntenna(double a[]){
+    public ArrayList<Result> calcAntenna(double a[],float dif){
+        float difSize = a.length;
+        this.dif = dif;
+        difStep=dif/difSize;
+        int i=0;/*
         for(double param:a){
             System.out.println(param);
-            calcCurve(param,1);
+
+            calcCurve(param, 1, 0);
+
+            i++;
+
+        }*/
+        for(double param:a){
+            calcCurve(a[0], 1, i*difStep);
+            i++;
         }
-      //  calcEdges();
-       // calcEnds(a.length);
+       // calcEdges();
+        //calcEnds(a.length);
         System.out.println("before mirior size"+results.size());
         mirror(results.size());
         System.out.println("after mirior size"+results.size());

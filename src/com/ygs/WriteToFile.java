@@ -6,8 +6,8 @@ import java.util.Locale;
 
 public class WriteToFile {
     ArrayList<Result>results;
-    WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a){
-        write("","echo",startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a);
+    WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist){
+        write("","echo",startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,a_dist);
     }
     WriteToFile(String path,String name,float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a){
         if(name==null||name==""){
@@ -16,11 +16,11 @@ public class WriteToFile {
         if(path==null){
             path="";
         }
-        write(path,name,startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a);
+        write(path,name,startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,0);
     }
-    private void write(String path,String name,float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a){
+    private void write(String path,String name,float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist){
         Calc antenna =   new Calc(startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC);
-        ArrayList<Result> results = antenna.calcAntenna(a);
+        ArrayList<Result> results = antenna.calcAntenna(a,a_dist);
 
         PrintWriter writer = null;
         Locale.setDefault(Locale.US);
@@ -31,7 +31,7 @@ public class WriteToFile {
             writer.println("*");
             writer.println("800");
             writer.println( "***Wires***");
-            writer.println(results.size());
+            writer.println(results.size()+1);
 
             String output1 = String.format("%.5f,\t%.5f,\t%.1f,\t%.5f,\t%.5f,\t0.0,\t%.5f,\t-1",results.get(0).getX(), results.get(0).getY(),results.get(0).getZ(),-1*results.get(0).getX(),-1*results.get(0).getY(), results.get(0).getRadius());
             writer.println(output1);

@@ -1,6 +1,9 @@
 package com.ygs;
 
 
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +16,8 @@ import java.util.ArrayList;
 
 public class LayoutControll {
     boolean isInited =false;
+    WinDef.HWND hwnd;
+    String windowName = "MMANA-GAL basic";
     @FXML
     private Canvas canvas;
     @FXML
@@ -71,7 +76,7 @@ public class LayoutControll {
         String wireMetric= transMetric(wire_metric.getValue());
         float wireR = Float.parseFloat( wire_r.getText());
 
-        WriteToFile write = new WriteToFile(startDist,angleStep,wireR,coilMetric,wireMetric,a);
+        WriteToFile write = new WriteToFile(startDist,angleStep,wireR,coilMetric,wireMetric,a,aEnd);
         ArrayList<Result> results = write.getResults();
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
@@ -86,6 +91,8 @@ public class LayoutControll {
             double y2= (result.getY1()*1000)+midlOfScreenY;
             gc.strokeLine(x1,y1,x2,y2);
         }
+        WINAPIController controller = new WINAPIController(windowName,hwnd);
+        controller.makeResearch();
     }
 
     private String transMetric(String metric){
