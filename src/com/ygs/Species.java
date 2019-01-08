@@ -22,6 +22,7 @@ public class Species implements Comparable<Species>{
     private void calc(int frequency){
 
         double[]a = new double[gene.getCoilNum()];
+        a[0] =gene.getA();
         WriteToFile write =new WriteToFile(gene.getDistance(),gene.getAngleStep(),gene.getRadius(),"mm","mm",a,gene.getD(),frequency);
         //float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist,int frequency
         WINAPIController winapiController =  new WINAPIController("MMANA-GAL basic");

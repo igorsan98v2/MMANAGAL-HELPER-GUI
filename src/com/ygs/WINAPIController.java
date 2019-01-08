@@ -39,11 +39,12 @@ public class WINAPIController {
     private Pos posStart,posEnd;
     private Pos geometryBtnPos,calcBtnPos,viewBtnPos;
     private Pos startBtnPos;
-
+    private float resistance;
+    private float jX;
     Robot robot ;
     Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-    public WINAPIController(String windowName, WinDef.HWND hwnd){
+    public WINAPIController(String windowName){
         this.windowName= windowName;
 
         if(hwnd==null) {
@@ -116,11 +117,11 @@ public class WINAPIController {
 
         // check all occurance
         while (matcher.find()) {
-            System.out.print("Start index: " + matcher.start());
-            System.out.print(" End index: " + matcher.end() + " ");
+      //      System.out.print("Start index: " + matcher.start());
+        //    System.out.print(" End index: " + matcher.end() + " ");
             res = matcher.group();
 
-            System.out.println("group: "+matcher.group());
+          //  System.out.println("group: "+matcher.group());
         }
         System.out.println("rsult"+res);
         res = res.replace("j","    \t ");
@@ -129,14 +130,18 @@ public class WINAPIController {
         res = res.replace("-    \t ","    \t -");
         System.out.println(res);
         String[]resArr = res.split("    \t ");
-        for (String str:
-            resArr ) {
-            System.out.println(str);
-        }
-        float r = Float.parseFloat(resArr[5]);
-        float j = Float.parseFloat(resArr[6]);
-        System.out.printf("Resistance:%f\tj:%f",r,j);
+
+        resistance= Float.parseFloat(resArr[5]);
+        jX = Float.parseFloat(resArr[6]);
+      //  System.out.printf("Resistance:%f\tj:%f",r,j);
         startAgain();
+    }
+
+    public float getjX() {
+        return jX;
+    }
+    public  float getResistance(){
+        return  resistance;
     }
     private void startAgain(){
         robot.keyPress(KeyEvent.VK_CONTROL);
@@ -157,13 +162,13 @@ public class WINAPIController {
                 robot=new Robot();
             }
 
-            Thread.sleep(9000);
+            Thread.sleep(40000);
             while (res==""||res==null){
 
                 resFieldPos.y=height/2;
 
                 robot.mouseMove(posStart.x+resFieldPos.x,posStart.y+resFieldPos.y);
-                Thread.sleep(5000);
+
                 robot.mousePress(LEFT_CLICK);
                 resFieldPos.y = 0;
                 robot.mouseMove(posStart.x+resFieldPos.x,posStart.y+resFieldPos.y);
@@ -172,7 +177,7 @@ public class WINAPIController {
                 robot.keyPress(KeyEvent.VK_C);
                 robot.keyRelease(KeyEvent.VK_CONTROL);
                 robot.keyRelease(KeyEvent.VK_C);
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 Transferable contents = cp.getContents(null);
 
                 boolean isTextInside = contents!=null && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
@@ -195,6 +200,8 @@ public class WINAPIController {
         }
         catch (InterruptedException e){
             e.printStackTrace();
+        }if(res == ""){
+           res =  getResults();
         }
         return res;
     }

@@ -34,10 +34,14 @@ public class GeneticAlgoritm {
     }
     private Species speciesFabric(){
 
-        float a = (float)(getRandomNumberInRange(0,100)*0.0001);
-        float d = (float) getRandomNumberInRange(20,270);
-        float distance = (float) getRandomNumberInRange(5,30);
-        Gene gene = new Gene(a,6,d,720,20,distance);
+        float a = (float)(getRandomNumberInRange(20,100)*0.0001);
+        float d = (float) getRandomNumberInRange(20,180);
+        float distance = (float) getRandomNumberInRange(5,10);
+        System.out.println("a:"+a);
+        System.out.println("d:"+d);
+        System.out.println("distance:"+distance);
+        Gene gene = new Gene(a,4,d,720,25,distance);
+
         return new Species(gene);
     }
     private void initArr(){
@@ -49,10 +53,11 @@ public class GeneticAlgoritm {
         return new Species(species.getGene(),species1.getGene());
     }
     private Species mutate(Species mutant){
-        float a = (float)(getRandomNumberInRange(-50,100)*0.0001)+mutant.getGene().getA();
+        System.out.println("mutate");
+        float a = (float)(getRandomNumberInRange(-25,25)*0.0001)+mutant.getGene().getA();
         float d = (float) getRandomNumberInRange(-125,125)+mutant.getGene().getD();
         float distance = (float) getRandomNumberInRange(-20,20)+mutant.getGene().getDistance();
-        Gene gene = new Gene(a,6,d,720,20,distance);
+        Gene gene = new Gene(a,4,d,720,30,distance);
 
         return new Species(gene);
     }
@@ -73,6 +78,7 @@ public class GeneticAlgoritm {
     private void calc(int freq){
         for(int i=0;i<speciesArr.length;i++){
             speciesArr[i].calcRate(targetR,targetJx,freq);
+
         }
         Arrays.sort(speciesArr);
         int length = speciesArr.length;

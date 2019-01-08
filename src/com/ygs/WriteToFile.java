@@ -6,8 +6,15 @@ import java.util.Locale;
 
 public class WriteToFile {
     ArrayList<Result>results;
+    private int frequency =800;
+    public WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist,int frequency){
+        this.frequency = frequency;
+        write("","echo",startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,a_dist);
+
+    }
     WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist){
         write("","echo",startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,a_dist);
+
     }
     WriteToFile(String path,String name,float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a){
         if(name==null||name==""){
@@ -29,7 +36,7 @@ public class WriteToFile {
             writer  = new PrintWriter(path+name+".maa", "UTF-8");
             writer.println("ANTENNA ");
             writer.println("*");
-            writer.println("800");
+            writer.println( String.format("%.1f",(float)frequency));
             writer.println( "***Wires***");
             writer.println(results.size()+1);
 

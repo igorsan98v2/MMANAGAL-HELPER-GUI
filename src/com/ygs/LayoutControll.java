@@ -91,8 +91,11 @@ public class LayoutControll {
             double y2= (result.getY1()*1000)+midlOfScreenY;
             gc.strokeLine(x1,y1,x2,y2);
         }
-        WINAPIController controller = new WINAPIController(windowName,hwnd);
-        controller.makeResearch();
+        new GeneticAlgoritm(10,50,30,50,50,3,3).selection(800,3200,100);
+        //   new GeneticAlgoritm(10,100,30,50,0,3,3).selection(800,4000,100);
+       //
+        // WINAPIController controller = new WINAPIController(windowName);
+        //controller.makeResearch();
     }
 
     private String transMetric(String metric){
