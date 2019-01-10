@@ -1,5 +1,7 @@
 package com.ygs;
 
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
@@ -24,7 +26,7 @@ class Pos{
 }
 public class WINAPIController {
     static private WinDef.HWND hwnd;
-
+    static private ProgressInfo childEnum=new ProgressInfo();
     private  String windowName;
     private int width,height;
     private final int MIN_BTN_GEOMETRY_W = 73;
@@ -89,8 +91,8 @@ public class WINAPIController {
     }
     public void makeResearch(){
 
-      //  User32.INSTANCE.SetForegroundWindow(hwnd);
-       // User32.INSTANCE.ShowWindow(hwnd,9);
+        User32.INSTANCE.SetForegroundWindow(hwnd);
+        User32.INSTANCE.ShowWindow(hwnd,9);
         float cof=1f;
         if(isFullScreen(hwnd)){
             cof=1.2f;
@@ -144,6 +146,8 @@ public class WINAPIController {
         return  resistance;
     }
     private void startAgain(){
+        User32.INSTANCE.SetForegroundWindow(hwnd);
+        User32.INSTANCE.ShowWindow(hwnd,9);
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_N);
         robot.keyRelease(KeyEvent.VK_CONTROL);
@@ -151,7 +155,7 @@ public class WINAPIController {
 
     }
     private String getResults(){
-        String res ="";
+        String res =null;
         StringSelection stringSelection = new StringSelection("");
         cp.setContents(stringSelection,null);
 
@@ -161,10 +165,20 @@ public class WINAPIController {
             if(robot==null){
                 robot=new Robot();
             }
+            boolean state =false;
 
-            Thread.sleep(40000);
-            while (res==""||res==null){
 
+            while (true){
+                Thread.sleep(1000);
+                User32.INSTANCE.EnumChildWindows(hwnd, childEnum.getWndenumproc(),null);
+                state = childEnum.getState();
+                if(state==true){
+                    Thread.sleep(2000);
+                    break;
+                }
+            }
+            User32.INSTANCE.SetForegroundWindow(hwnd);
+            User32.INSTANCE.ShowWindow(hwnd,9);
                 resFieldPos.y=height/2;
 
                 robot.mouseMove(posStart.x+resFieldPos.x,posStart.y+resFieldPos.y);
@@ -177,7 +191,7 @@ public class WINAPIController {
                 robot.keyPress(KeyEvent.VK_C);
                 robot.keyRelease(KeyEvent.VK_CONTROL);
                 robot.keyRelease(KeyEvent.VK_C);
-                Thread.sleep(500);
+                Thread.sleep(100);
                 Transferable contents = cp.getContents(null);
 
                 boolean isTextInside = contents!=null && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
@@ -187,21 +201,29 @@ public class WINAPIController {
                         System.out.println(res);
 
                         cp.setContents(stringSelection,null);
+                        //проверяем не равно ли всё ничему
+                        if(res == null||res==(String)contents.getTransferData(DataFlavor.stringFlavor)){
+                            res =  getResults();
+
+                        }
+                        if(res.matches("PULSE NUMBER EXCEEDS DIMENSION (MAX=8192)")){
+                            System.out.println("ERROR:"+res);
+                            startAgain();
+                        }
                     }
                     catch (UnsupportedFlavorException e){e.printStackTrace();}
                     catch (IOException e){
                     e.printStackTrace();
                     }
                 }
-            }
+
+
         }
         catch (AWTException e){
             e.printStackTrace();
         }
         catch (InterruptedException e){
             e.printStackTrace();
-        }if(res == ""){
-           res =  getResults();
         }
         return res;
     }
