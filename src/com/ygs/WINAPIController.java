@@ -133,9 +133,15 @@ public class WINAPIController {
         System.out.println(res);
         String[]resArr = res.split("    \t ");
 
-        resistance= Float.parseFloat(resArr[5]);
-        jX = Float.parseFloat(resArr[6]);
-      //  System.out.printf("Resistance:%f\tj:%f",r,j);
+        if(resArr.length>5) {
+            resistance = Float.parseFloat(resArr[5]);
+            jX = Float.parseFloat(resArr[6]);
+        }
+        else{
+            jX=50000;
+            resistance=50000;
+        }
+        //  System.out.printf("Resistance:%f\tj:%f",r,j);
         startAgain();
     }
 

@@ -12,6 +12,15 @@ public class GeneticAlgoritm {
     private Species[]speciesArr;
     private int topBest ;
     private int topWorst;
+    private float aMin;
+    private float aMax;
+    private float intervalMin;
+    private float intervalMax;
+    private float distanceMin;
+    private float distanceMax;
+    private int curvsNum;
+    private int angleStep;
+    private boolean isVertEnabled = false;
     Random random = new Random();
     private  int getRandomNumberInRange(int min, int max) {
 
@@ -22,8 +31,37 @@ public class GeneticAlgoritm {
 
         return random.nextInt((max - min) + 1) + min;
     }
+    private  float getRandomNumberInRange(float min, float max) {
 
-    public  GeneticAlgoritm(int speciesNum,int epochNum,int mutateRate,float targetR,float targetJx,int topBest,int topWorst){
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        return min + random.nextFloat() * (max - min );
+
+    }
+
+
+    public GeneticAlgoritm(int speciesNum,int mutateRate, int epochNum, float targetR, float targetJx, int topBest, int topWorst, float aMin, float aMax, float intervalMin, float intervalMax, float distanceMin, float distanceMax, int curvsNum,int angleStep, boolean isVertEnabled) {
+        speciesArr = new Species[speciesNum];
+        this.mutateRate = mutateRate;
+        this.epochNum = epochNum;
+        this.targetR = targetR;
+        this.targetJx = targetJx;
+        this.topBest = topBest;
+        this.topWorst = topWorst;
+        this.aMin = aMin;
+        this.aMax = aMax;
+        this.intervalMin = intervalMin;
+        this.intervalMax = intervalMax;
+        this.distanceMin = distanceMin;
+        this.distanceMax = distanceMax;
+        this.curvsNum = curvsNum;
+        this.isVertEnabled = isVertEnabled;
+        this.angleStep = angleStep;
+    }
+
+    public  GeneticAlgoritm(int speciesNum, int epochNum, int mutateRate, int spiralNum, float targetR, float targetJx, int topBest, int topWorst){
         speciesArr = new Species[speciesNum];
         this.mutateRate = mutateRate;
         this.epochNum = epochNum ;
@@ -34,13 +72,13 @@ public class GeneticAlgoritm {
     }
     private Species speciesFabric(){
 
-        float a = (float)(getRandomNumberInRange(20,100)*0.0001);
-        float d = (float) getRandomNumberInRange(20,180);
-        float distance = (float) getRandomNumberInRange(5,10);
+        float a = (float)(getRandomNumberInRange(Math.round(aMin/0.0001f),Math.round(aMax/0.0001f))*0.0001);
+        float d = (float) getRandomNumberInRange(Math.round(intervalMin*100),Math.round(intervalMax*100))/100;
+        float distance = (float)  getRandomNumberInRange(Math.round(distanceMin*100),Math.round(distanceMax*100))/100;
         System.out.println("a:"+a);
         System.out.println("d:"+d);
         System.out.println("distance:"+distance);
-        Gene gene = new Gene(a,4,d,720,25,distance);
+        Gene gene = new Gene(a,curvsNum,d,720,angleStep,distance);
 
         return new Species(gene);
     }
@@ -54,11 +92,10 @@ public class GeneticAlgoritm {
     }
     private Species mutate(Species mutant){
         System.out.println("mutate");
-        float a = (float)(getRandomNumberInRange(-25,25)*0.0001)+mutant.getGene().getA();
-        float d = (float) getRandomNumberInRange(-125,125)+mutant.getGene().getD();
-        float distance = (float) getRandomNumberInRange(-20,20)+mutant.getGene().getDistance();
-        Gene gene = new Gene(a,4,d,720,30,distance);
-
+        float a = (getRandomNumberInRange(-aMin,aMin)/2)+mutant.getGene().getA();
+        float d = (getRandomNumberInRange(-intervalMin,intervalMin)/2)+mutant.getGene().getD();
+        float distance = (getRandomNumberInRange(-distanceMin,distanceMin)/2)+mutant.getGene().getDistance();
+        Gene gene = new Gene(a,curvsNum,d,720,angleStep,distance);
         return new Species(gene);
     }
     public void selection(int startFreq ,int endFreq,int freqStep){
