@@ -6,6 +6,7 @@ public class Species implements Comparable<Species>{
     private float jX=0;
     private float rate=0;
     private float comRate=0;
+
     public Species(float a,int coilNum,float d,int angle,int angleStep,float distance){
         gene = new Gene(a,coilNum,d,angle,angleStep,distance);
 
@@ -50,6 +51,12 @@ public class Species implements Comparable<Species>{
     public float getComRate() {
 
         return comRate;
+    }
+    public void computeComRate(int iters){
+        comRate=comRate/iters;//ОБЯЗАТЕЛЬНО ДЕЛАТЬ
+    }
+    public void setComRateZero(){
+        comRate = 0f;
     }
     @Override
     public int compareTo(Species species) {

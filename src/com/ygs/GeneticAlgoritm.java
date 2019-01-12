@@ -1,7 +1,12 @@
 package com.ygs;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 
 public class GeneticAlgoritm {
@@ -99,11 +104,35 @@ public class GeneticAlgoritm {
         return new Species(gene);
     }
     public void selection(int startFreq ,int endFreq,int freqStep){
+        initArr();
         for(int i=0;i<epochNum;i++){
-            initArr();
+
+            int iters=0;
             for(int freq = startFreq;freq<endFreq;freq+=freqStep){
                 calc(freq);
+                iters++;
             }
+            for(int z=0;z<speciesArr.length;z++){
+                speciesArr[z].computeComRate(iters);
+
+            }
+            Arrays.sort(speciesArr);
+            for(int z=0;z<speciesArr.length;z++){
+                speciesArr[z].setComRateZero();
+            }
+            int length = speciesArr.length;
+            for(int j=0;i<topWorst;j++){
+                if(getRandomNumberInRange(0,100)>mutateRate){
+                    int partner = getRandomNumberInRange(0,topBest);
+                    int partner1 = getRandomNumberInRange(topBest,length-1-topWorst);
+                    speciesArr[length-1-topWorst]=  cross(speciesArr[partner],speciesArr[partner1]);
+                }
+                else {
+
+                    speciesArr[length-1-j]= mutate(speciesArr[length-1-j]);
+                }
+            }
+            writeToLog(i);
             if(i>5){
                 if(speciesArr[0].getComRate()/i<50){
                     break;
@@ -112,25 +141,31 @@ public class GeneticAlgoritm {
         }
         speciesArr[0].calcRate(targetR,targetJx,3000);
     }
+
     private void calc(int freq){
         for(int i=0;i<speciesArr.length;i++){
             speciesArr[i].calcRate(targetR,targetJx,freq);
 
         }
-        Arrays.sort(speciesArr);
-        int length = speciesArr.length;
-        for(int i=0;i<topWorst;i++){
-            if(getRandomNumberInRange(0,100)>mutateRate){
-                int partner = getRandomNumberInRange(0,topBest);
-                int partner1 = getRandomNumberInRange(topBest,length-1-topWorst);
-                speciesArr[length-1-topWorst]=  cross(speciesArr[partner],speciesArr[partner1]);
-            }
-            else {
+        //место где сортировка стояла прежде
+    }
+    private void writeToLog(int epochNum){
+        String filePath = "epoch.log";
+        String text = String.format("\nepoch:%d\t",epochNum );
+        try {
+            Files.write(Paths.get(filePath), text.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
 
-                speciesArr[length-1-i]= mutate(speciesArr[length-1-i]);
+        for(Species species: speciesArr) {
+            text = String.format("\na:%f\tinterval:%f\tdistance:%f\tR:%f Omh\tjX:%f Omh",species.getGene().getA(),species.getGene().getD(),species.getGene().getDistance(),species.getR(),species.getjX());
+            try {
+                Files.write(Paths.get(filePath), text.getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                System.out.println(e);
             }
         }
 
     }
-
 }
