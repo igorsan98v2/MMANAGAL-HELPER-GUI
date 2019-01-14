@@ -7,8 +7,10 @@ import java.util.Locale;
 public class WriteToFile {
     ArrayList<Result>results;
     private int frequency =800;
-    public WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist,int frequency){
+    private boolean isEnabled;
+    public WriteToFile(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist,int frequency,boolean isEnabled){
         this.frequency = frequency;
+        this.isEnabled=isEnabled;
         write("","echo",startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,a_dist);
 
     }
@@ -26,7 +28,7 @@ public class WriteToFile {
         write(path,name,startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC,a,0);
     }
     private void write(String path,String name,float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC,double []a,float a_dist){
-        Calc antenna =   new Calc(startDist,angleStep,radius,ANTENNA_METRIC,WIRE_METRIC);
+        Calc antenna =   new Calc(startDist,angleStep,radius,isEnabled,ANTENNA_METRIC,WIRE_METRIC);
         ArrayList<Result> results = antenna.calcAntenna(a,a_dist);
 
         PrintWriter writer = null;

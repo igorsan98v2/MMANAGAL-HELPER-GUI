@@ -16,7 +16,8 @@ public class HelperGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         try{
-            root = FXMLLoader.load(getClass().getResource("geneticModelLayout.fxml"));
+        //    root = FXMLLoader.load(getClass().getResource("geneticModelLayout.fxml"));
+            root =FXMLLoader.load(getClass().getResource("layout.fxml"));
             primaryStage.setTitle("MMANAGAL HELPER");
             primaryStage.setScene(new Scene(root, 1200, 720));
             primaryStage.show();

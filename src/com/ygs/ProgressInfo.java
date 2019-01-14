@@ -12,7 +12,7 @@ public class ProgressInfo   {
     private boolean state=false;
     private  WinUser.WNDENUMPROC wndenumproc;
     public  boolean getState(){
-        System.out.println("progress"+progress);
+     //   System.out.println("progress"+progress);
         state = progress>=100?true:false;
         return state;
     }
@@ -38,16 +38,16 @@ public class ProgressInfo   {
                 String title = Native.toString(textBuffer2);
 
                 if (className.matches("TProgressBar")) {
-                    System.out.println("bar couter"+barCounter);
+       //             System.out.println("bar couter"+barCounter);
                     barCounter++;
                     if(barCounter==1){
                         WinDef.LRESULT lresult = User32.INSTANCE.SendMessage(hwnd, WinUser.WM_USER + 8, null, null);
-                        System.out.println("atUpdate bar 1 " + lresult.intValue());
+         //               System.out.println("atUpdate bar 1 " + lresult.intValue());
                         int lprogress = lresult.intValue();
                     }
                     else {
                         WinDef.LRESULT lresult = User32.INSTANCE.SendMessage(hwnd, WinUser.WM_USER + 8, null, null);
-                        System.out.println("atUpdate bar 2 " + lresult.intValue());
+           //             System.out.println("atUpdate bar 2 " + lresult.intValue());
                         int lprogress = lresult.intValue();
                         barCounter=0;
                     }
@@ -59,12 +59,10 @@ public class ProgressInfo   {
                     //   System.out.println("ok founded progress bar");
                     if(barCounter==1) {
                         WinDef.LRESULT lresult = User32.INSTANCE.SendMessage(hwnd, WinUser.WM_USER + 8, null, null);
-                        System.out.println("atUpdate" + lresult.intValue());
+             //           System.out.println("atUpdate" + lresult.intValue());
                         int lprogress = lresult.intValue();
 
                         progress = lprogress;
-
-
                     }
 
                     //в программе 2 прогресс бара, но поскольку я всегда перезаписываю значения  с первого вторым , то и результат всегда верный

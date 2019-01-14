@@ -17,7 +17,7 @@ public class Main {
     }
     public static void main(String[] args) {
 	// write your code here
-        Calc antenna =   new Calc(21,25,15,"mm","mm");
+        Calc antenna =   new Calc(21,25,15,true,"mm","mm");
         double []a= {0.00609234622,0.007,0.008,0.009,0.01};
         ArrayList<Result>results = antenna.calcAntenna(a,0);
 

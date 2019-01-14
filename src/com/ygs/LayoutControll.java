@@ -61,6 +61,7 @@ public class LayoutControll {
     @FXML
     void calc(ActionEvent event) {
         int aSize = a_c.getValue();
+        System.out.println("aSize:"+aSize);
         float aStart =Float.parseFloat( a_s.getText());
         float aEnd = Float.parseFloat(a_e.getText());
         double []a =new double[aSize];
@@ -76,7 +77,7 @@ public class LayoutControll {
         String wireMetric= transMetric(wire_metric.getValue());
         float wireR = Float.parseFloat( wire_r.getText());
 
-        WriteToFile write = new WriteToFile(startDist,angleStep,wireR,coilMetric,wireMetric,a,aEnd);
+        WriteToFile write = new WriteToFile(startDist,angleStep,wireR,coilMetric,wireMetric,a,aEnd,800, false);
         ArrayList<Result> results = write.getResults();
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
@@ -92,7 +93,7 @@ public class LayoutControll {
             gc.strokeLine(x1,y1,x2,y2);
         }
        // new GeneticAlgoritm(10,50,30,50,50,3,3).selection(800,3200,100);
-           new GeneticAlgoritm(10,100,30,5,50,0,3,3).selection(800,4000,100);
+         //  new GeneticAlgoritm(10,100,30,5,50,0,3,3).selection(800,4000,100);
        //
         // WINAPIController controller = new WINAPIController(windowName);
         //controller.makeResearch();

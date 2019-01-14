@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,6 +50,7 @@ public class GeneticAlgoritm {
 
 
     public GeneticAlgoritm(int speciesNum,int mutateRate, int epochNum, float targetR, float targetJx, int topBest, int topWorst, float aMin, float aMax, float intervalMin, float intervalMax, float distanceMin, float distanceMax, int curvsNum,int angleStep, boolean isVertEnabled) {
+        Species.isEnabled = isVertEnabled;
         speciesArr = new Species[speciesNum];
         this.mutateRate = mutateRate;
         this.epochNum = epochNum;
@@ -88,9 +91,11 @@ public class GeneticAlgoritm {
         return new Species(gene);
     }
     private void initArr(){
+
         for (int i=0;i<speciesArr.length;i++){
             speciesArr[i] = speciesFabric();
         }
+        System.out.println("Length after init:"+speciesArr.length);
     }
     private Species cross(Species species,Species species1){
         return new Species(species.getGene(),species1.getGene());
@@ -100,6 +105,9 @@ public class GeneticAlgoritm {
         float a = (getRandomNumberInRange(-aMin,aMin)/2)+mutant.getGene().getA();
         float d = (getRandomNumberInRange(-intervalMin,intervalMin)/2)+mutant.getGene().getD();
         float distance = (getRandomNumberInRange(-distanceMin,distanceMin)/2)+mutant.getGene().getDistance();
+        System.out.println("a:"+a);
+        System.out.println("d:"+d);
+        System.out.println("distance:"+distance);
         Gene gene = new Gene(a,curvsNum,d,720,angleStep,distance);
         return new Species(gene);
     }
@@ -113,23 +121,32 @@ public class GeneticAlgoritm {
                 iters++;
             }
             for(int z=0;z<speciesArr.length;z++){
-                speciesArr[z].computeComRate(iters);
+                speciesArr[z].computeComRate(iters);//УЖАС
 
             }
             Arrays.sort(speciesArr);
             for(int z=0;z<speciesArr.length;z++){
-                speciesArr[z].setComRateZero();
+
+                speciesArr[z].setComRateZero();//ИСПРАВИТЬ
+
             }
             int length = speciesArr.length;
-            for(int j=0;i<topWorst;j++){
+            for(int j=1;j<topWorst+1;j++){
                 if(getRandomNumberInRange(0,100)>mutateRate){
                     int partner = getRandomNumberInRange(0,topBest);
                     int partner1 = getRandomNumberInRange(topBest,length-1-topWorst);
-                    speciesArr[length-1-topWorst]=  cross(speciesArr[partner],speciesArr[partner1]);
+                    System.out.printf("p:%d\tp1:%d\n",partner,partner1);
+                    try {
+                        System.out.printf("length:%d\tcur lentghth%d\tj:%d\n",length,speciesArr.length,j);
+                        speciesArr[speciesArr.length-j]=  cross(speciesArr[partner],speciesArr[partner1]);
+                    }
+                    catch (IndexOutOfBoundsException e){
+                        System.out.println("length:"+length+"\tj:"+j +"\tmsg:"+e.getMessage());
+                    }
                 }
                 else {
 
-                    speciesArr[length-1-j]= mutate(speciesArr[length-1-j]);
+                    speciesArr[length-j]= mutate(speciesArr[length-j]);
                 }
             }
             writeToLog(i);
@@ -145,21 +162,28 @@ public class GeneticAlgoritm {
     private void calc(int freq){
         for(int i=0;i<speciesArr.length;i++){
             speciesArr[i].calcRate(targetR,targetJx,freq);
-
+            float jX= speciesArr[i].getjX();
+            float R = speciesArr[i].getR();
+            System.out.printf("R:%f\tjX:%f\tgene:%d\tfreq:%d Mhz\n",R,jX,i+1,freq);
         }
         //место где сортировка стояла прежде
     }
     private void writeToLog(int epochNum){
         String filePath = "epoch.log";
-        String text = String.format("\nepoch:%d\t",epochNum );
-        try {
+
+        String text = String.format("\nepoch:%d",epochNum );
+        if(epochNum==0){
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            text +="\ttime:"+ dtf.format(now)+"\n";
+        }        try {
             Files.write(Paths.get(filePath), text.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.out.println(e);
         }
 
         for(Species species: speciesArr) {
-            text = String.format("\na:%f\tinterval:%f\tdistance:%f\tR:%f Omh\tjX:%f Omh",species.getGene().getA(),species.getGene().getD(),species.getGene().getDistance(),species.getR(),species.getjX());
+            text = String.format("\na:%f\tinterval:%f\tdistance:%f\tR:%f Omh\tjX:%f Omh\n",species.getGene().getA(),species.getGene().getD(),species.getGene().getDistance(),species.getR(),species.getjX());
             try {
                 Files.write(Paths.get(filePath), text.getBytes(), StandardOpenOption.APPEND);
             } catch (IOException e) {

@@ -77,7 +77,7 @@ public class GeneticLayoutControll {
     @FXML
     void setPath(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Оберіть MMANA-GAL.exe");
         Stage  stage = new Stage();
         File file= fileChooser.showOpenDialog(stage);
         if(file!=null){
@@ -113,7 +113,7 @@ public class GeneticLayoutControll {
         }
        // new GeneticAlgoritm(population,epoch,mutateRate,curvesNum,R,jX,3,3).selection(800,4000,100);
         GeneticAlgoritm geneticAlgorithm =  new GeneticAlgoritm(population,mutateRate,epoch,R,jX,3,3,aMin,aMax,intervalMin,intervalMax,distanceMin,distanceMax,curvesNum,angleStep,isVert);
-        geneticAlgorithm.selection(800,4000,100);
+        geneticAlgorithm.selection(3000,3400,500);
 
     }
 }

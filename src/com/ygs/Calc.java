@@ -9,7 +9,10 @@ public class Calc {
     private float radius;
     private double dif;
     private float difStep;
+    private boolean isEnabled;
     private ArrayList<Result>results =new ArrayList<>();
+    private ArrayList<Integer>endsPos = new ArrayList<>();
+    private ArrayList<Integer>startPos = new ArrayList<>();
     private double toRadian(double angle){
         return (Math.PI*angle/180f);
     }
@@ -17,6 +20,35 @@ public class Calc {
         for(int i=0;i<curSize;i++ ){
             Result res = results.get(i);
             results.add(new Result( res.getX()*-1,res.getY()*-1,res.getZ()*-1,res.getX1()*-1,res.getY1()*-1,res.getZ1()*-1,res.getRadius()));
+        }
+    }
+    private void calcEdges(boolean isCalc){
+        System.out.println("all curves:"+endsPos.size());
+        /*if(results.size()>1){
+            int oneCurvSize= endsPos.get(0);
+            for(int j=0;j<endsPos.size()-1;j++){
+                for(int i =endsPos.get(j);i<endsPos.get(j+1);i++){
+                    if(endsPos.get(j)+i<results.size()) {
+                        Result res = results.get(i);
+                        Result res1 = results.get((endsPos.get(j) + i));
+                        results.add(new Result(res.getX1(), res.getY1(), res.getZ1(), res1.getX1(), res1.getY1(), res1.getZ1(), res.getRadius()));
+                    }
+                }
+            }
+        }*/
+        if(isCalc){
+            if(results.size()>1){
+                for(int i=0;i<startPos.size()-1;i++){
+                    for(int j=startPos.get(i),z= endsPos.get(i);j<endsPos.get(i);j++,z++){
+                        if(z<results.size()) {
+                            Result res = results.get(j);
+                            Result res1 = results.get(z);
+                            results.add(new Result(res.getX1(), res.getY1(), res.getZ1(), res1.getX1(), res1.getY1(), res1.getZ1(), res.getRadius()));
+                        }
+
+                    }
+                }
+            }
         }
     }
     private void calcEdges(){
@@ -47,6 +79,7 @@ public class Calc {
         results= new ArrayList<>();
     }
     private void calcCurve(double a,int side,float curDif){
+        startPos.add(results.size());
         for(float angle=0,angle_1=angleStep;angle_1<=360*2;angle+=angleStep,angle_1+=angleStep ){
             double protoRes =(startDist*Math.exp(a*(angle-curDif)))*side;
             double protoRes_1= (startDist*Math.exp(a*(angle_1-curDif)))*side;
@@ -55,12 +88,13 @@ public class Calc {
             results.add(new Result((protoRes*Math.cos(radAngel)),(protoRes*Math.sin(radAngel)),0,
                     (protoRes_1*Math.cos(radAngel_1)),(protoRes_1*Math.sin(radAngel_1)),0,radius));
         }
+        endsPos.add(results.size());
         System.out.println("CurvSize"+results.size());
     }
-    public Calc(float startDist,int angleStep,float radius,final String ANTENNA_METRIC,final String WIRE_METRIC){
+    public Calc(float startDist,int angleStep,float radius,boolean isEnabled,final String ANTENNA_METRIC,final String WIRE_METRIC){
         int metricCofAntenna =0;
         int metricCofWire =0;
-
+        this.isEnabled = isEnabled;
         switch (ANTENNA_METRIC){
             case "mm":metricCofAntenna=1000;
             break;
@@ -89,10 +123,12 @@ public class Calc {
             i++;
 
         }*/
+        System.out.println("real near by curvs:"+a.length);
         for(double param:a){
             calcCurve(a[0], 1, i*difStep);
             i++;
         }
+        calcEdges(isEnabled);
        // calcEdges();
         //calcEnds(a.length);
         System.out.println("before mirior size"+results.size());
